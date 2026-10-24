@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>lingua | Language Translation Tool</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-volume" viewBox="0 0 24 24"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></symbol>
+    <symbol id="i-swap" viewBox="0 0 24 24"><path d="M7 7h13M16 3l4 4-4 4M17 17H4M8 13l-4 4 4 4"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+  </svg>
+
+  <div class="page">
+    <header class="top">
+      <div class="logo">lingua<span>&#10022;</span></div>
+      <span class="badge">CodeAlpha AI Internship &middot; Task 1</span>
+    </header>
+
+    <section class="hero">
+      <p class="eyebrow">Less barriers. More connection.</p>
+      <h1>Your words, in any language.</h1>
+      <p class="sub">A simple space to connect across languages.<br>Type, paste or speak, and the source language is detected for you.</p>
+    </section>
+
+    <section class="board" aria-label="Translator">
+      <div class="langrow">
+        <select id="srcSel" aria-label="Source language"></select>
+        <button id="swapBtn" class="swap" type="button" aria-label="Swap languages" title="Swap languages">
+          <svg class="ic"><use href="#i-swap"/></svg>
+        </button>
+        <select id="tgtSel" aria-label="Target language"></select>
+      </div>
+
+      <div class="panels">
+        <div class="panel">
+          <div class="panel-head">
+            <span class="label">Original text</span>
+            <span class="head-right">
+              <span id="detected" class="tag hidden"></span>
+              <button id="clearBtn" class="link-btn" type="button">Clear</button>
+            </span>
+          </div>
+          <textarea id="inputText" maxlength="1000" placeholder="Type something to translate..." aria-label="Text to translate"></textarea>
+          <div class="toolbar">
+            <div class="tools">
+              <button id="micBtn" class="tool" type="button"><svg class="ic"><use href="#i-mic"/></svg><span>Speak</span></button>
+              <button id="listenIn" class="tool" type="button"><svg class="ic"><use href="#i-volume"/></svg><span>Listen</span></button>
+            </div>
+            <span id="charCount" class="count">0 / 1000</span>
+          </div>
+        </div>
+
+        <div class="panel out">
+          <div class="panel-head">
+            <span class="label">Translation</span>
+            <span id="engine" class="tag plain"></span>
+          </div>
+          <div id="outputText" class="output placeholder" aria-live="polite">Your translation will appear here...</div>
+          <div class="toolbar">
+            <div class="tools">
+              <button id="listenOut" class="tool" type="button" disabled><svg class="ic"><use href="#i-volume"/></svg><span>Listen</span></button>
+              <button id="copyBtn" class="tool" type="button" disabled><svg class="ic"><use href="#i-copy"/></svg><span>Copy</span></button>
+              <button id="downloadBtn" class="tool" type="button" disabled><svg class="ic"><use href="#i-download"/></svg><span>Save .txt</span></button>
+              <button id="starBtn" class="tool" type="button" disabled><svg class="ic"><use href="#i-star"/></svg><span>Star</span></button>
+            </div>
+            <span id="busy" class="count"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="actions">
+      <label class="check"><input type="checkbox" id="autoToggle" checked><span>Translate as I type</span></label>
+      <button id="translateBtn" class="primary" type="button">Translate</button>
+    </div>
+
+    <section class="lists">
+      <div class="list-head">
+        <div class="seg" role="tablist">
+          <button type="button" data-tab="recent" class="on">Recent</button>
+          <button type="button" data-tab="saved">Starred</button>
+        </div>
+        <button id="clearList" class="link-btn" type="button">Clear list</button>
+      </div>
+      <ul id="listEl"></ul>
+    </section>
+
+    <footer>Made by Rishita Kapoor &middot; CodeAlpha AI Internship, Task 1</footer>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="script.js"></script>
+</body>
+</html>
